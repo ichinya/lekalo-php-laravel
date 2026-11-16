@@ -19,8 +19,12 @@ Framework-пакет Laravel для [Lekalo](https://github.com/ichinya/lekalo),
 
 ## Запуск
 
+Пакет работает на всех актуальных версиях PHP (8.0–8.6; 8.6 — RC до
+GA) вместе с языковым адаптером; хост-интерпретатор не нужен.
+
 ```sh
-php -n tests/laravel.php   # 36 проверок; резолвит ../lekalo-php/src или LEKALO_PHP_SRC
+php -n tests/laravel.php          # 36 проверок; резолвит ../lekalo-php/src или LEKALO_PHP_SRC
+scripts/version-matrix.sh         # сюита на php 8.0…8.6 через docker
 ```
 
 Общий план отделения — [ichinya/lekalo#241](https://github.com/ichinya/lekalo/issues/241); зависимость на совместимую версию lekalo-php — [ichinya/lekalo#239](https://github.com/ichinya/lekalo/issues/239).
