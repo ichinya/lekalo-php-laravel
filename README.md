@@ -15,7 +15,26 @@ Framework-пакет Laravel для [Lekalo](https://github.com/ichinya/lekalo),
 | `src/laravel-lint.php` | Eloquent-факты lint (базовый класс модели). |
 | `src/{scenario-emit,route-emit,native-policy,native-plan}.php` | Эмиттер Laratesto-тестов, Illuminate-роутер, Composer/artisan execution policy и планировщик native-гейтов. |
 | `composer-gates-policy.json` | Composer execution policy (custody-байты подтверждений; verbatim встраивается в единый артефакт). |
-| `tests/laravel.php` | Сюита пакета: 36 проверок — регистрация в `lekalo-php`, matrix, раннеры, lint-факты, полиси и юнит-ноги эмиттера миграций (перенесены из сюиты протокола монорепы). |
+| `tests/laravel.php` | Сюита пакета: 41 проверка — регистрация в `lekalo-php`, matrix, раннеры, lint-факты, полиси и юнит-ноги эмиттера миграций (перенесены из сюиты протокола монорепы). |
+| `lekalo.package.json` | Манифест правил: принадлежащие пакету модули, Composer policy и совместимый provider API. |
+
+## Композиция с PHP runtime
+
+```sh
+php -n ../lekalo-php/build.php --rules . \
+  --id lekalo-target-php-laravel --target php-laravel \
+  --output /tmp/laravel-adapter.php
+```
+
+Сборщик принадлежит `lekalo-php`; этот пакет объявляет свои модули и ресурсы
+в `lekalo.package.json` (`kind: rules`). Ядро Lekalo не перечисляет файлы
+Laravel. Другой набор правил может использовать тот же provider API и свой
+checkout. Пересекающиеся capability families двух providers отказывают;
+автоматического приоритета по имени пакета нет.
+
+Манифест описывает сборку PHP-артефакта, а не доставку пакетов и не
+пользовательскую конфигурацию. Resolver произвольных Git-репозиториев,
+версия PHP-интерпретатора и конфигурация компонентов отслеживаются в #239/#241.
 
 ## Запуск
 
@@ -23,7 +42,7 @@ Framework-пакет Laravel для [Lekalo](https://github.com/ichinya/lekalo),
 GA) вместе с языковым адаптером; хост-интерпретатор не нужен.
 
 ```sh
-php -n tests/laravel.php          # 36 проверок; резолвит ../lekalo-php/src или LEKALO_PHP_SRC
+php -n tests/laravel.php          # 41 проверка; резолвит ../lekalo-php/src или LEKALO_PHP_SRC
 scripts/version-matrix.sh         # сюита на php 8.0…8.6 через docker
 ```
 
