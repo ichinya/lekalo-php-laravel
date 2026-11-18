@@ -1,8 +1,11 @@
 [
   "adapters/php-laravel/adapter.manifest.json",
+  "crates/lekalo-cli/tests/package_adoption.rs",
   "crates/lekalo-cli/tests/php_types_pipeline.rs",
   "crates/lekalo-core/tests/php_laravel_kernel.rs",
   "scripts/regen-php-adapter-manifest.mjs",
+  "scripts/test-adapter-manifest-golden.mjs",
+  "scripts/test-docs-examples.mjs",
   "scripts/test-laravel-migration-contracts.mjs",
   "scripts/test-php-laravel-adapter.mjs",
   "scripts/test-php-laravel-migrations.mjs",
@@ -30,6 +33,8 @@
   "scripts/test-worklog-changelog-impact.mjs",
   "scripts/test-worklog-changelog-neutrality.mjs",
   "scripts/test-worklog-changelog-pilot.mjs",
+  "tests/fixtures/adopt/laravel-app",
   "tests/fixtures/laravel-migrations",
-  "tests/fixtures/php-laravel"
+  "tests/fixtures/php-laravel",
+  "tests/pilot/worklog-changelog-journal.php"
 ]

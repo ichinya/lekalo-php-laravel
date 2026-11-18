@@ -95,6 +95,7 @@ jobs:
         run: |
           set -euo pipefail
           NODE_PATH="$LEKALO_AJV_NODE_PATH" node scripts/test-task-links-contracts.mjs
+          node scripts/test-adapter-manifest-golden.mjs
           node scripts/test-task-links-scenarios.mjs
           node scripts/test-task-links-outbox.mjs
           node scripts/test-task-links-impact-portability.mjs
@@ -203,6 +204,7 @@ jobs:
           NODE_PATH="$NODE_PATH$delim$RUNNER_TEMP/lekalo-client-sdk-vue/node_modules" node scripts/test-docs-examples.mjs --lane planner
       - name: Run the adapter integration tests through Cargo
         run: |
+          cargo test --locked -p lekalo-cli --test package_adoption
           cargo test --locked -p lekalo-core --test php_laravel_kernel
           cargo test --locked -p lekalo-cli --test php_types_pipeline
       - name: Remove the CI-only AppArmor launcher prerequisite

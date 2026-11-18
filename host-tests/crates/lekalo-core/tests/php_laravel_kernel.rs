@@ -839,3 +839,31 @@ fn the_php_operations_generator_plans_applies_and_verifies_composed_operations()
     )
     .expect("restore input");
 }
+
+#[test]
+fn the_committed_php_adapter_manifest_parses() {
+    let bytes = include_bytes!("../../../adapters/php-laravel/adapter.manifest.json");
+    let document = lekalo_core::adapter_package::ManifestDocument::from_bytes(bytes)
+        .expect("the committed PHP adapter manifest must parse");
+    assert_eq!(document.adapter_id(), "lekalo-target-php-laravel");
+    // Stage 4 (issue #241): the provider seam lands under adapter
+    // 0.9.0; the wire protocol remains independently pinned at
+    // 0.6.4.
+    assert_eq!(document.adapter_version().as_str(), "0.9.0");
+    // The runtime is the closed php spelling with the 8.0 floor
+    // (lekalo-php#1: all current PHP versions 8.0-8.6), checked
+    // against the raw canonical bytes (the wire struct keeps the
+    // runtime block opaque).
+    let value: serde_json::Value = serde_json::from_slice(bytes).expect("manifest is JSON");
+    assert_eq!(value["executable"]["runtime"]["kind"], "php");
+    assert_eq!(value["executable"]["runtime"]["minVersion"], "8.0.0");
+    // The permission posture is the strict shipped default.
+    assert_eq!(
+        value["permissions"]["network"]["mode"],
+        serde_json::json!("denied")
+    );
+    assert_eq!(
+        value["permissions"]["processes"]["children"],
+        serde_json::json!("denied")
+    );
+}
