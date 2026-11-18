@@ -6,7 +6,13 @@ Framework-пакет Laravel для [Lekalo](https://github.com/ichinya/lekalo),
 - интеграции Laramago и Laratesto (Mago + Laravel-пресеты, Testo + Laravel-окружение);
 - библиотечный пакет с manifest и схемами — собственный демон не требуется.
 
-## Состав (stage 4, M2)
+## Переносимые правила
+
+В конфигурации компонента укажите `rules: [gh/ichinya/lekalo-php-laravel]`. Публичный пакет версии 0.2.0 поставляет `contracts/http.json`. Его правило `health-route` требует маршрут `GET /health`. Это явная политика выбранного пакета. Другой runtime может применять те же правила, если он выдаёт факты `http.routes/v1` вида `{"routes":[{"method":"GET","path":"/health"}]}`.
+
+Для PHP пакет описывает класс регистрации и методы в `bindings.php.static-router/v1`. Поддерживаются прямые вызовы с литеральным путём в `routes/web.php` или `web.php` относительно компонента. Группы, префиксы и динамические пути требуют более полного анализатора. Проверка сообщает о неполном анализе при встрече таких конструкций.
+
+## Состав PHP-провайдера
 
 | Путь | Содержимое |
 | --- | --- |
@@ -16,7 +22,7 @@ Framework-пакет Laravel для [Lekalo](https://github.com/ichinya/lekalo),
 | `src/{scenario-emit,route-emit,native-policy,native-plan}.php` | Эмиттер Laratesto-тестов, Illuminate-роутер, Composer/artisan execution policy и планировщик native-гейтов. |
 | `composer-gates-policy.json` | Composer execution policy (custody-байты подтверждений; verbatim встраивается в единый артефакт). |
 | `tests/laravel.php` | Сюита пакета: 41 проверка — регистрация в `lekalo-php`, matrix, раннеры, lint-факты, полиси и юнит-ноги эмиттера миграций (перенесены из сюиты протокола монорепы). |
-| `lekalo.package.json` | Манифест правил: принадлежащие пакету модули, Composer policy и совместимый provider API. |
+| `lekalo.php-build.json` | Манифест сборки PHP-провайдера: принадлежащие пакету модули, Composer policy и совместимый provider API. |
 
 ## Композиция с PHP runtime
 
@@ -27,14 +33,10 @@ php -n ../lekalo-php/build.php --rules . \
 ```
 
 Сборщик принадлежит `lekalo-php`; этот пакет объявляет свои модули и ресурсы
-в `lekalo.package.json` (`kind: rules`). Ядро Lekalo не перечисляет файлы
+в `lekalo.php-build.json` (`kind: rules`). Ядро Lekalo не перечисляет файлы
 Laravel. Другой набор правил может использовать тот же provider API и свой
 checkout. Пересекающиеся capability families двух providers отказывают;
 автоматического приоритета по имени пакета нет.
-
-Манифест описывает сборку PHP-артефакта, а не доставку пакетов и не
-пользовательскую конфигурацию. Resolver произвольных Git-репозиториев,
-версия PHP-интерпретатора и конфигурация компонентов отслеживаются в #239/#241.
 
 ## Запуск
 
@@ -48,4 +50,4 @@ scripts/version-matrix.sh         # сюита на php 8.0…8.6 через doc
 
 Общий план отделения — [ichinya/lekalo#241](https://github.com/ichinya/lekalo/issues/241); зависимость на совместимую версию lekalo-php — [ichinya/lekalo#239](https://github.com/ichinya/lekalo/issues/239).
 
-Статус: код перенесён из `adapters/php-laravel` монорепы (PR ichinya/lekalo#243); на переходном этапе монорепа собирает единый `adapter.php` из закреплённых (vendored) выпусков этого пакета и `lekalo-php`.
+В `compat/adapter.php` хранится совместимый артефакт для пользователей target-протокола. Команда сборки выше воспроизводит его байты.
