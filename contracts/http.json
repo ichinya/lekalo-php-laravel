@@ -1,0 +1,54 @@
+{
+  "schema": "lekalo/contract-rules/v1",
+  "requires": [
+    "http.routes/v1"
+  ],
+  "bindings": {
+    "php.static-router/v1": {
+      "files": [
+        "web.php",
+        "routes/web.php"
+      ],
+      "class": "Illuminate\\Support\\Facades\\Route",
+      "methods": {
+        "get": "GET",
+        "post": "POST",
+        "put": "PUT",
+        "patch": "PATCH",
+        "delete": "DELETE",
+        "options": "OPTIONS"
+      }
+    }
+  },
+  "checks": [
+    {
+      "id": "health-route",
+      "schema": {
+        "type": "object",
+        "required": [
+          "routes"
+        ],
+        "properties": {
+          "routes": {
+            "type": "array",
+            "contains": {
+              "type": "object",
+              "required": [
+                "method",
+                "path"
+              ],
+              "properties": {
+                "method": {
+                  "const": "GET"
+                },
+                "path": {
+                  "const": "/health"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}
