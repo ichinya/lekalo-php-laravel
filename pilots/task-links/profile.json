@@ -1,0 +1,23 @@
+{
+  "schema": "lekalo/task-links-worker/v1",
+  "target": "php-laravel-maintained",
+  "implementation": "php-laravel-maintained/laravel-13.33.0-pdo-sqlite",
+  "runtime": "laravel/framework@13.33.0",
+  "engine": "pdo-sqlite",
+  "interpreter": "php",
+  "fixture": "tests/fixtures/php-laravel/planner",
+  "bootstrap": "vendor/autoload.php",
+  "framework_source": "vendor/laravel/framework/src/Illuminate/Database/Connection.php",
+  "lock": {
+    "path": "composer.lock",
+    "sha256": "e41adfada5bc77d37cbf0ff040420b713cdb91727a4d9db843d372775d84015a"
+  },
+  "worker": {
+    "path": "src/task-links-worker.php",
+    "sha256": "7f71001c2adc8f0445adee789817c611f8cfffff32403798fdc9ffb7bd785963"
+  },
+  "store": {
+    "path": "app/Lekalo/TaskLinksStore.php",
+    "sha256": "4ada016a7bace8ff42efc122ea178ca2c0eaede6e6b0e6d864ce8c674239b43d"
+  }
+}
