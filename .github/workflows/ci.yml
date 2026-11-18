@@ -1,0 +1,46 @@
+name: Package CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+env:
+  CARGO_INCREMENTAL: "0"
+  CARGO_PROFILE_DEV_DEBUG: "0"
+  CARGO_PROFILE_TEST_DEBUG: "0"
+jobs:
+  php:
+    runs-on: ubuntu-latest
+    env:
+      LEKALO_PHP_SRC: ${{ github.workspace }}/.ci/lekalo-php/src
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/checkout@v7
+        with:
+          repository: ichinya/lekalo-php
+          ref: 04a88f7f19007635a760a9ec3071e8e6662e984a
+          path: .ci/lekalo-php
+          persist-credentials: false
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: tokenizer
+          tools: none
+      - run: php -n tests/laravel.php
+      - run: php -n compat/build.php --check
+      - run: php -n compat/tests/process.php
+  attachments:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: dtolnay/rust-toolchain@stable
+      - run: cargo test --locked --manifest-path crates/attachments/Cargo.toml
+  contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ichinya/lekalo/.github/actions/test-official-package@6f5387d98092d73f011003e62c3a59859b7271e8
+        with:
+          package: lekalo-php-laravel
