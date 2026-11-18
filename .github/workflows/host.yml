@@ -21,7 +21,7 @@ jobs:
       run:
         shell: bash
     steps:
-      - uses: ichinya/lekalo-adapter-sdk/.github/actions/stage-host-tests@2c8009f10afebce94a60e14470b8fec115d9a87c
+      - uses: ichinya/lekalo-adapter-sdk/.github/actions/stage-host-tests@ebe6ce17bd948d52850fb1a600e07a1ddbee7062
         with:
           host: 9eb07ce8f21f96a9a160d382ac6280b9fa0fbcbe
       - name: Provision pinned external integration packages
@@ -178,6 +178,8 @@ jobs:
         run: node scripts/test-php-laravel-parity.mjs
       - name: Check Laravel schemas and cross-runtime rule portability
         run: |
+          export LEKALO_AJV_NODE_PATH="$(node -p 'require("node:path").join(process.env.RUNNER_TEMP,"lekalo-ajv-8.20.0/node_modules")')"
+          export NODE_PATH="$LEKALO_AJV_NODE_PATH"
           node scripts/test-php-operations-contracts.mjs
           node scripts/test-laravel-migration-contracts.mjs
           node --test scripts/test-portable-laravel.mjs
@@ -199,6 +201,10 @@ jobs:
           set -euo pipefail
           delim=":"; if [ "$RUNNER_OS" = "Windows" ]; then delim=";"; fi
           NODE_PATH="$NODE_PATH$delim$RUNNER_TEMP/lekalo-client-sdk-vue/node_modules" node scripts/test-docs-examples.mjs --lane planner
+      - name: Run the adapter integration tests through Cargo
+        run: |
+          cargo test --locked -p lekalo-core --test php_laravel_kernel
+          cargo test --locked -p lekalo-cli --test php_types_pipeline
       - name: Remove the CI-only AppArmor launcher prerequisite
         if: always() && runner.os == 'Linux'
         timeout-minutes: 1
@@ -235,7 +241,7 @@ jobs:
           --health-cmd="pg_isready -U postgres -d lekalo"
           --health-interval=10s --health-timeout=5s --health-retries=20
     steps:
-      - uses: ichinya/lekalo-adapter-sdk/.github/actions/stage-host-tests@2c8009f10afebce94a60e14470b8fec115d9a87c
+      - uses: ichinya/lekalo-adapter-sdk/.github/actions/stage-host-tests@ebe6ce17bd948d52850fb1a600e07a1ddbee7062
         with:
           host: 9eb07ce8f21f96a9a160d382ac6280b9fa0fbcbe
       - name: Provision pinned external integration packages
@@ -280,7 +286,7 @@ jobs:
     runs-on: ubuntu-26.04
     timeout-minutes: 20
     steps:
-      - uses: ichinya/lekalo-adapter-sdk/.github/actions/stage-host-tests@2c8009f10afebce94a60e14470b8fec115d9a87c
+      - uses: ichinya/lekalo-adapter-sdk/.github/actions/stage-host-tests@ebe6ce17bd948d52850fb1a600e07a1ddbee7062
         with:
           host: 9eb07ce8f21f96a9a160d382ac6280b9fa0fbcbe
       - uses: dtolnay/rust-toolchain@stable
@@ -323,7 +329,7 @@ jobs:
     runs-on: ubuntu-26.04
     timeout-minutes: 15
     steps:
-      - uses: ichinya/lekalo-adapter-sdk/.github/actions/stage-host-tests@2c8009f10afebce94a60e14470b8fec115d9a87c
+      - uses: ichinya/lekalo-adapter-sdk/.github/actions/stage-host-tests@ebe6ce17bd948d52850fb1a600e07a1ddbee7062
         with:
           host: 9eb07ce8f21f96a9a160d382ac6280b9fa0fbcbe
       - name: Install the pinned PHP packages and compatibility artifact

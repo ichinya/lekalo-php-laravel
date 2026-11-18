@@ -1,5 +1,7 @@
 [
   "adapters/php-laravel/adapter.manifest.json",
+  "crates/lekalo-cli/tests/php_types_pipeline.rs",
+  "crates/lekalo-core/tests/php_laravel_kernel.rs",
   "scripts/regen-php-adapter-manifest.mjs",
   "scripts/test-laravel-migration-contracts.mjs",
   "scripts/test-php-laravel-adapter.mjs",
@@ -17,6 +19,17 @@
   "scripts/test-php-types-contracts.mjs",
   "scripts/test-pilot-laravel-vue.mjs",
   "scripts/test-portable-laravel.mjs",
+  "scripts/test-reference-projects.mjs",
+  "scripts/test-task-links-impact-portability.mjs",
+  "scripts/test-task-links-native.mjs",
+  "scripts/test-task-links-outbox.mjs",
+  "scripts/test-task-links-public-evidence.mjs",
+  "scripts/test-task-links-scenarios.mjs",
+  "scripts/test-worklog-changelog-admission.mjs",
+  "scripts/test-worklog-changelog-contracts.mjs",
+  "scripts/test-worklog-changelog-impact.mjs",
+  "scripts/test-worklog-changelog-neutrality.mjs",
+  "scripts/test-worklog-changelog-pilot.mjs",
   "tests/fixtures/laravel-migrations",
   "tests/fixtures/php-laravel"
 ]
