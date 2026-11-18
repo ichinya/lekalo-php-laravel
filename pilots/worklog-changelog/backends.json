@@ -1,0 +1,12 @@
+{
+  "schema": "lekalo/worklog-backends/v1",
+  "backends": [{
+    "target": "php-laravel",
+    "lane": "php",
+    "identity": "taskhub.runtime/fake-transport",
+    "entry": "run.php",
+    "sha256": "accb5045c148a40e13bdb96a510c994ac5c4b74cfd23ddbbe8406ad447b2b374",
+    "interpreter": "php",
+    "interpreter_env": "LEKALO_PHP"
+  }]
+}
