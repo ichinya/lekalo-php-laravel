@@ -12,7 +12,11 @@ env:
   CARGO_PROFILE_TEST_DEBUG: "0"
 jobs:
   php:
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.0', '8.1', '8.2', '8.3', '8.4', '8.5', '8.6']
+    runs-on: ubuntu-26.04
     env:
       LEKALO_PHP_SRC: ${{ github.workspace }}/.ci/lekalo-php/src
     steps:
@@ -25,10 +29,15 @@ jobs:
           persist-credentials: false
       - uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.3'
+          php-version: ${{ matrix.php }}
           extensions: tokenizer
           tools: none
       - run: php -n tests/laravel.php
+      - name: The unified artifact answers describe on this version
+        run: |
+          set -euo pipefail
+          printf '%s' '{"protocol":"lekalo.target/v1","protocol_version":"0.6.4","operation":"describe","request_id":"req-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","project_root":"."}' \
+            | php -n compat/adapter.php | grep -q '"version":"0.9.0"'
       - run: php -n compat/build.php --check
       - run: php -n compat/tests/process.php
   attachments:
@@ -41,6 +50,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: ichinya/lekalo/.github/actions/test-official-package@6f5387d98092d73f011003e62c3a59859b7271e8
+      - uses: shivammathur/setup-php@v2
         with:
-          package: lekalo-php-laravel
+          php-version: '8.3'
+          extensions: tokenizer
+          tools: none
+      - uses: ichinya/lekalo-adapter-sdk/.github/actions/package-contract@5dccba0f460834e767c63ce89750a6611fb7431a
+        with:
+          host: 9eb07ce8f21f96a9a160d382ac6280b9fa0fbcbe

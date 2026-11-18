@@ -1,0 +1,22 @@
+[
+  "adapters/php-laravel/adapter.manifest.json",
+  "scripts/regen-php-adapter-manifest.mjs",
+  "scripts/test-laravel-migration-contracts.mjs",
+  "scripts/test-php-laravel-adapter.mjs",
+  "scripts/test-php-laravel-migrations.mjs",
+  "scripts/test-php-laravel-native-gates.mjs",
+  "scripts/test-php-laravel-operations.mjs",
+  "scripts/test-php-laravel-parity.mjs",
+  "scripts/test-php-laravel-routes.mjs",
+  "scripts/test-php-laravel-scenario-bindings.mjs",
+  "scripts/test-php-laravel-scenario-tests.mjs",
+  "scripts/test-php-laravel-type-roundtrip.mjs",
+  "scripts/test-php-laravel-types.mjs",
+  "scripts/test-php-laravel-ui.mjs",
+  "scripts/test-php-operations-contracts.mjs",
+  "scripts/test-php-types-contracts.mjs",
+  "scripts/test-pilot-laravel-vue.mjs",
+  "scripts/test-portable-laravel.mjs",
+  "tests/fixtures/laravel-migrations",
+  "tests/fixtures/php-laravel"
+]
