@@ -1,0 +1,6 @@
+{
+  "runtime": "gh/ichinya/lekalo-php#16e90e4e7b56cc42395372684338716c1670bd8b",
+  "path": "routes/web.php",
+  "valid": "<?php use Illuminate\\Support\\Facades\\Route as R; R::get('/health', function () {});",
+  "invalid": "<?php // no routes"
+}
