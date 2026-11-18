@@ -22,6 +22,8 @@
   "scripts/test-php-types-contracts.mjs",
   "scripts/test-pilot-laravel-vue.mjs",
   "scripts/test-portable-laravel.mjs",
+  "scripts/test-reference-contract.mjs",
+  "scripts/test-reference-model.mjs",
   "scripts/test-reference-projects.mjs",
   "scripts/test-task-links-impact-portability.mjs",
   "scripts/test-task-links-native.mjs",

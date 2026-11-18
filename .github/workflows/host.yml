@@ -96,6 +96,8 @@ jobs:
           set -euo pipefail
           NODE_PATH="$LEKALO_AJV_NODE_PATH" node scripts/test-task-links-contracts.mjs
           node scripts/test-adapter-manifest-golden.mjs
+          node scripts/test-reference-model.mjs
+          node scripts/test-reference-contract.mjs
           node scripts/test-task-links-scenarios.mjs
           node scripts/test-task-links-outbox.mjs
           node scripts/test-task-links-impact-portability.mjs
