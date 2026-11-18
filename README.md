@@ -51,3 +51,19 @@ scripts/version-matrix.sh         # сюита на php 8.0…8.6 через doc
 Общий план отделения — [ichinya/lekalo#241](https://github.com/ichinya/lekalo/issues/241); зависимость на совместимую версию lekalo-php — [ichinya/lekalo#239](https://github.com/ichinya/lekalo/issues/239).
 
 В `compat/adapter.php` хранится совместимый артефакт для пользователей target-протокола. Команда сборки выше воспроизводит его байты.
+
+Помимо переносимых правил, пакет поставляет валидатор legacy-входов
+`lekalo/operations` и `lekalo/routes`, которые используются до генерации.
+Установите его командой `cargo install --locked --path crates/attachments`
+и укажите в конфигурации проекта оба сервиса. После этого выполните
+`lekalo runtime lock`.
+
+```yaml
+services:
+  attachments/operations: {command: [lekalo-laravel-attachments]}
+  attachments/routes: {command: [lekalo-laravel-attachments]}
+```
+
+Процесс получает текст attachment, канонический IR, проверенные привязки
+ошибок, транспорт и дайджесты. Возвращаемые findings сохраняют прежние коды.
+Для проверки валидатора используйте `cargo test --locked --manifest-path crates/attachments/Cargo.toml`.
