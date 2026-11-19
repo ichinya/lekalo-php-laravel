@@ -71,6 +71,10 @@ test('the Laravel contract is portable and parent validation identifies the affe
   for (const root of [api, web]) run(root, validate);
   writeFileSync(zenSource, 'GET /v2/health\n');
   assert.equal(run(web, validate, 1).diagnostics[0].data.rule, 'health-route');
+  for (const malformed of ['POST', 'post /orders', 'POST orders']) {
+    writeFileSync(zenSource, 'GET /health\n' + malformed + '\n');
+    assert.equal(run(web, validate, 1).diagnostics[0].data.rule, 'health-route', malformed);
+  }
   writeFileSync(zenSource, 'GET /health\n');
 
   workspace(api, {exports: {routes: {kind: 'runtime-fact', component: 'app', package: 'lekalo-php-laravel', rule: 'health-route'}}});

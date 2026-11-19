@@ -25,12 +25,22 @@
       "id": "health-route",
       "schema": {
         "type": "object",
+        "additionalProperties": false,
         "required": [
           "routes"
         ],
         "properties": {
           "routes": {
             "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["method", "path"],
+              "properties": {
+                "method": {"type": "string", "pattern": "^[A-Z]+$"},
+                "path": {"type": "string", "pattern": "^/[^\\s]*$"}
+              }
+            },
             "contains": {
               "type": "object",
               "required": [
