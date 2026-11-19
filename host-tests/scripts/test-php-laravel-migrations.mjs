@@ -604,11 +604,17 @@ if (servicePg || dockerAvailable()) {
       execFileSync("docker", [
         "run", "-d", "--name", container,
         "-e", "POSTGRES_HOST_AUTH_METHOD=trust", "-e", "POSTGRES_DB=lekalo",
-        "-p", "54329:5432", "postgres:16-alpine",
+        "postgres:16-alpine",
       ], { encoding: "utf8", timeout: 240000 });
       let ready = false;
       for (let attempt = 0; attempt < 120 && !ready; attempt += 1) {
-        const probe = spawnSync("docker", ["exec", container, "pg_isready", "-U", "postgres"], { encoding: "utf8" });
+        // The image's initialization server accepts local socket connections
+        // before restarting. TCP readiness selects the final server.
+        const probe = spawnSync(
+          "docker",
+          ["exec", container, "pg_isready", "-h", "127.0.0.1", "-U", "postgres"],
+          { encoding: "utf8" },
+        );
         ready = probe.status === 0 && probe.stdout.includes("accepting connections");
         if (!ready) Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 500);
       }
