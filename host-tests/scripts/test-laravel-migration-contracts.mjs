@@ -16,6 +16,7 @@ import { createRequire } from "node:module";
 import { readdirSync, readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { externalRoot } from "./external-tool.mjs";
 
 const require = createRequire(import.meta.url);
 let Ajv2020;
@@ -39,8 +40,10 @@ function failEarly(reason, detail) {
   process.exit(1);
 }
 
+const contracts = resolve(externalRoot("lekalo-php-laravel"), "contracts");
+const readSchema = (name) => JSON.parse(readFileSync(resolve(contracts, name), "utf8"));
 const ajv = new Ajv2020({ strict: true, allErrors: true });
-const schema = readJson("contracts/laravel-migration-input.schema.v0.4.0.json");
+const schema = readSchema("laravel-migration-input.schema.v0.4.0.json");
 const validate = ajv.compile(schema);
 
 // --- canonical form: sorted object keys, compact separators ---
