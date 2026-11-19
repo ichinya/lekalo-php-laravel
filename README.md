@@ -67,3 +67,11 @@ services:
 Процесс получает текст attachment, канонический IR, проверенные привязки
 ошибок, транспорт и дайджесты. Возвращаемые findings сохраняют прежние коды.
 Для проверки валидатора используйте `cargo test --locked --manifest-path crates/attachments/Cargo.toml`.
+
+## Legacy migration contract
+
+The [Laravel migration input schema](contracts/laravel-migration-input.schema.v0.4.0.json)
+defines the versioned document consumed by the Laravel migration emitter.
+`lekalo storage laravel-plan` produces the document after validating and
+gating the migration plan. The shared PHP types, operations, and routes
+schemas are maintained in [lekalo-php](https://github.com/ichinya/lekalo-php/tree/main/contracts).

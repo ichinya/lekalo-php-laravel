@@ -24,6 +24,21 @@ jobs:
       - uses: ichinya/lekalo-adapter-sdk/.github/actions/stage-host-tests@ebe6ce17bd948d52850fb1a600e07a1ddbee7062
         with:
           host: 9eb07ce8f21f96a9a160d382ac6280b9fa0fbcbe
+      - uses: actions/checkout@v7
+        with:
+          repository: ichinya/lekalo-php
+          ref: f22d578d432a16a256127349486f90333c8a0ddb
+          path: .ci/lekalo-php
+          persist-credentials: false
+      - name: Select the PHP companion checkout for integration
+        run: |
+          node --input-type=module <<'NODE'
+          import {appendFileSync} from 'node:fs';
+          import {resolve} from 'node:path';
+          const packages = JSON.parse(process.env.LEKALO_EXTERNAL_TOOLS);
+          packages['lekalo-php'] = resolve('.ci/lekalo-php');
+          appendFileSync(process.env.GITHUB_ENV, `LEKALO_EXTERNAL_TOOLS=${JSON.stringify(packages)}\n`);
+          NODE
       - name: Provision pinned external integration packages
         run: node scripts/external-tool.mjs --provision
       - name: Use physical temporary paths for synthetic project fixtures

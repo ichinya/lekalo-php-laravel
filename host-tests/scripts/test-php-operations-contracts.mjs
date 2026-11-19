@@ -18,6 +18,7 @@ import { createRequire } from "node:module";
 import { readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { externalRoot } from "./external-tool.mjs";
 
 const require = createRequire(import.meta.url);
 let Ajv2020;
@@ -39,7 +40,6 @@ if (ajvVersion !== "8.20.0") failEarly("ajv-version", ajvVersion);
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const read = (relative) => readFileSync(resolve(root, relative), "utf8");
-const readJson = (relative) => JSON.parse(read(relative));
 
 const failures = [];
 const fail = (caseName, detail) => failures.push({ case: caseName, detail });
@@ -59,11 +59,13 @@ function canonicalJson(value) {
   return JSON.stringify(value);
 }
 
+const contracts = resolve(externalRoot("lekalo-php"), "contracts");
+const readSchema = (name) => JSON.parse(readFileSync(resolve(contracts, name), "utf8"));
 const ajv = new Ajv2020({ strict: true, allErrors: true });
 
-const inputSchema = readJson("contracts/php-operations-input.schema.v0.4.0.json");
-const mapSchema = readJson("contracts/php-operations-map.schema.v0.4.0.json");
-const evidenceSchema = readJson("contracts/php-operations-evidence.schema.v0.4.0.json");
+const inputSchema = readSchema("php-operations-input.schema.v0.4.0.json");
+const mapSchema = readSchema("php-operations-map.schema.v0.4.0.json");
+const evidenceSchema = readSchema("php-operations-evidence.schema.v0.4.0.json");
 const validateInput = ajv.compile(inputSchema);
 const validateMap = ajv.compile(mapSchema);
 const validateEvidence = ajv.compile(evidenceSchema);
